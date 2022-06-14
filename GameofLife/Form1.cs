@@ -71,6 +71,7 @@ namespace GameofLife
                         else
                         {
                             scratchPad[x, y] = false;
+
                         }
                     }
 
