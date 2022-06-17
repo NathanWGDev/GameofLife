@@ -76,7 +76,7 @@ namespace GameofLife
             0,
             0});
             this.numericUpDownNumber.Name = "numericUpDownNumber";
-            this.numericUpDownNumber.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownNumber.Size = new System.Drawing.Size(49, 20);
             this.numericUpDownNumber.TabIndex = 2;
             // 
             // Label1Number
@@ -92,14 +92,14 @@ namespace GameofLife
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(213, 115);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(49, 20);
             this.numericUpDown1.TabIndex = 4;
             // 
             // numericUpDown2
             // 
             this.numericUpDown2.Location = new System.Drawing.Point(213, 141);
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown2.Size = new System.Drawing.Size(49, 20);
             this.numericUpDown2.TabIndex = 5;
             // 
             // labelWidth
