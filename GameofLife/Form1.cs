@@ -383,13 +383,13 @@ namespace GameofLife
                 writer.WriteLine("!Here is the game.");
 
                 // Iterate through the universe one row at a time.
-                for (int y = 0; y < universe.Length; y++)
+                for (int y = 0; y < universe.GetLength(1); y++)
                 {
                     // Create a string to represent the current row.
                     String currentRow = string.Empty;
 
                     // Iterate through the current row one cell at a time.
-                    for (int x = 0; x < universe.Length; x++)
+                    for (int x = 0; x < universe.GetLength(0); x++)
                     {
                         // If the universe[x,y] is alive then append 'O' (capital O)
                         // to the row string.
@@ -397,7 +397,6 @@ namespace GameofLife
                         {
                             currentRow += 'O';
                         }
-
                         // Else if the universe[x,y] is dead then append '.' (period)
                         // to the row string.
                         else if (universe[x,y] == false)
@@ -506,15 +505,16 @@ namespace GameofLife
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     //call next
-                    rand.Next();
+                    int num = rand.Next();
 
-                    if (rand.Next() == 0)
+                    if (num == 0)
                     {
-                        scratchPad[x, y] = true;
+                        universe[x, y] = true;
+                        NextGeneration();
                     }
                     else
                     {
-                        scratchPad[x, y] = false;
+                        universe[x, y] = false;
                     }
                 }
             }
