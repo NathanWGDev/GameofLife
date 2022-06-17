@@ -27,6 +27,9 @@ namespace GameofLife
         // Generation count
         int generations = 0;
 
+        bool isHUDvisibile = true;
+
+        bool isToroidal = false;
         public Form1()
         {
             InitializeComponent();
@@ -43,14 +46,21 @@ namespace GameofLife
 
         // Calculate the next generation of cells
         private void NextGeneration()
-        {
+        {            
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 // Iterate through the universe in the x, left to right
                 for (int x = 0; x < universe.GetLength(0); x++)
-                {                   
-                    int count = CountNeighborsFinite(x,y);
-
+                {
+                    int count = 0;
+                    if (isToroidal)
+                    {
+                        count = CountNeighborsToroidal(x, y);
+                    }
+                    else
+                    {
+                        count = CountNeighborsFinite(x, y);
+                    }
                     //apply the rules
                     if (universe[x,y] == true)
                     {
@@ -79,7 +89,7 @@ namespace GameofLife
 
                         }
                     }
-
+                    CellLabel.Text = "Cells = " + universe[x,y].ToString();
 
                 }
             }
@@ -93,7 +103,8 @@ namespace GameofLife
 
             // Update status strip generations
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
-            //toolStripStatusLabelCells.Text = "Cells = " + scratchPad.ToString();
+            
+            
 
 
             //invalidate
@@ -143,10 +154,28 @@ namespace GameofLife
                     // Outline the cell with a pen
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
 
+                    //Font font = new Font("Arial", 20f);
 
+                    //StringFormat stringFormat = new StringFormat();
+                    //stringFormat.Alignment = StringAlignment.Center;
+                    //stringFormat.LineAlignment = StringAlignment.Center;
+
+                    //cellRect = new Rectangle(0, 0, 100, 100);
+                    //int neighbors = 8;
+
+                    //e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, cellRect, stringFormat);
                 }
             }
 
+            if (isHUDvisibile)
+            {
+                //Draw hud
+                Font font = new Font("Arial", 20f);
+
+                StringFormat stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Center;
+                stringFormat.LineAlignment = StringAlignment.Center;
+            }
             // Cleaning up pens and brushes
             gridPen.Dispose();
             cellBrush.Dispose();
@@ -382,6 +411,7 @@ namespace GameofLife
                 // It appends a CRLF for you.
                 writer.WriteLine("!Here is the game.");
 
+                
                 // Iterate through the universe one row at a time.
                 for (int y = 0; y < universe.GetLength(1); y++)
                 {
@@ -435,7 +465,7 @@ namespace GameofLife
 
                     // If the row begins with '!' then it is a comment
                     // and should be ignored.
-                    if (row.Contains("!"))
+                    if (row.StartsWith("!"))
                     {
                         continue;
                     }
@@ -447,7 +477,7 @@ namespace GameofLife
                     }
                     // Get the length of the current row string
                     // and adjust the maxWidth variable if necessary.
-                    maxWidth += row.Length;
+                    maxWidth = row.Length;
                 }
                 // Resize the current universe and scratchPad
                 // to the width and height of the file calculated above.
@@ -469,48 +499,54 @@ namespace GameofLife
                         continue;
                     }
                     // If the row is not a comment then 
-                    // it is a row of cells and needs to be iterated through.
-                    for (int xPos = 0; xPos < row.Length; xPos++)
+                    else
                     {
                         int yPos = 0;
-                        // If row[xPos] is a 'O' (capital O) then
-                        // set the corresponding cell in the universe to alive.
-                        if (row[xPos] is 'O')
+                        // it is a row of cells and needs to be iterated through.
+                        for (int xPos = 0; xPos < row.Length; xPos++)
                         {
-                            universe[xPos, yPos] = true;
-                        }
+                            
+                            // If row[xPos] is a 'O' (capital O) then
+                            // set the corresponding cell in the universe to alive.
+                            if (row[xPos] is 'O')
+                            {
+                                universe[xPos, yPos] = true;
+                                yPos++;
+                            }
 
-                        // If row[xPos] is a '.' (period) then
-                        // set the corresponding cell in the universe to dead.
-                        if (row[xPos] is '.')
-                        {
-                            universe[xPos, yPos] = false;
+                            // If row[xPos] is a '.' (period) then
+                            // set the corresponding cell in the universe to dead.
+                            if (row[xPos] is '.')
+                            {
+                                universe[xPos, yPos] = false;
+                                yPos++;
+                            }
+                            
                         }
+                        
                     }
                 }
                 // Close the file.
                 reader.Close();
 
             }
+            graphicsPanel1.Invalidate();
         }
 
         private void fromTimeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //random for time
             Random rand = new Random();
-            //random for seed
-            //Random randy = new Random(Int32);
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     //call next
-                    int num = rand.Next();
+                   int num = rand.Next(0,2);
 
                     if (num == 0)
                     {
                         universe[x, y] = true;
-                        NextGeneration();
                     }
                     else
                     {
@@ -518,6 +554,19 @@ namespace GameofLife
                     }
                 }
             }
+            graphicsPanel1.Invalidate();
+            
+        }
+
+        private void torodialToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            isToroidal = true;
+            
+        }
+
+        private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
