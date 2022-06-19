@@ -27,6 +27,9 @@ namespace GameofLife
         // Generation count
         int generations = 0;
 
+        int input2 = Properties.Settings.Default.Width;
+        int input3 = Properties.Settings.Default.Height;
+
         bool isHUDvisibile = true;
 
         bool isToroidal = false;
@@ -52,15 +55,14 @@ namespace GameofLife
                 // Iterate through the universe in the x, left to right
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    int count = 0;
-                    if (isToroidal)
+                    int count = CountNeighborsFinite(x, y);
+
+                    if (isToroidal == true)
                     {
                         count = CountNeighborsToroidal(x, y);
-                    }
-                    else
-                    {
-                        count = CountNeighborsFinite(x, y);
-                    }
+                    }                                       
+                        
+                    
                     //apply the rules
                     if (universe[x,y] == true)
                     {
@@ -338,13 +340,25 @@ namespace GameofLife
 
         private void modalToolStripMenuItem_Click(object sender, EventArgs e)
         {
+           
+
             ModalDialog dlg = new ModalDialog();
-            dlg.Number = generations;
+            dlg.Number = timer.Interval;
+            dlg.Number2 = input2;
+            dlg.Number3 = input3;
             if(DialogResult.OK == dlg.ShowDialog())
             {
-                generations = dlg.Number;
-                graphicsPanel1.Invalidate();
+                timer.Interval = dlg.Number;               
+                if (input2 != 0 || input3 != 0)
+                {
+                    input2 = dlg.Number2;
+                    input3 = dlg.Number3;
+                    universe = new bool[input2, input3];
+                    scratchPad = new bool[input2, input3];
+                    graphicsPanel1.Invalidate();
+                }             
             }
+            
         }
 
         private void gridColorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -374,6 +388,8 @@ namespace GameofLife
             Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
             Properties.Settings.Default.GridColor = gridColor;
             Properties.Settings.Default.CellColor = cellColor;
+            Properties.Settings.Default.Width = input2;
+            Properties.Settings.Default.Height = input3;
             Properties.Settings.Default.Save();
         }
 
@@ -384,6 +400,11 @@ namespace GameofLife
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
             gridColor = Properties.Settings.Default.GridColor;
             cellColor = Properties.Settings.Default.CellColor;
+            input2 = Properties.Settings.Default.Width;
+            input3 = Properties.Settings.Default.Height;
+            universe = new bool[input2, input3];
+            scratchPad = new bool[input2, input3];
+            graphicsPanel1.Invalidate();
         }
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -393,6 +414,8 @@ namespace GameofLife
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
             gridColor = Properties.Settings.Default.GridColor;
             cellColor = Properties.Settings.Default.CellColor;
+            input2 = Properties.Settings.Default.Width;
+            input3 = Properties.Settings.Default.Height;
         }
 
         private void saveToolStripButton_Click(object sender, EventArgs e)
@@ -487,6 +510,7 @@ namespace GameofLife
                 reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
                 // Iterate through the file again, this time reading in the cells.
+                int yPos = 0;
                 while (!reader.EndOfStream)
                 {
                     // Read one row at a time.
@@ -501,29 +525,25 @@ namespace GameofLife
                     // If the row is not a comment then 
                     else
                     {
-                        int yPos = 0;
+                        
                         // it is a row of cells and needs to be iterated through.
                         for (int xPos = 0; xPos < row.Length; xPos++)
                         {
                             
                             // If row[xPos] is a 'O' (capital O) then
                             // set the corresponding cell in the universe to alive.
-                            if (row[xPos] is 'O')
+                            if (row[xPos] == 'O')
                             {
-                                universe[xPos, yPos] = true;
-                                yPos++;
+                                universe[xPos, yPos] = true;                                
                             }
-
                             // If row[xPos] is a '.' (period) then
                             // set the corresponding cell in the universe to dead.
-                            if (row[xPos] is '.')
+                            else if (row[xPos] == '.')
                             {
-                                universe[xPos, yPos] = false;
-                                yPos++;
-                            }
-                            
+                                universe[xPos, yPos] = false;                               
+                            }                           
                         }
-                        
+                        yPos++;
                     }
                 }
                 // Close the file.
@@ -560,13 +580,61 @@ namespace GameofLife
 
         private void torodialToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            isToroidal = true;
+            if (isToroidal == false)
+            {
+                isToroidal = false;
+                torodialToolStripMenuItem.CheckState = CheckState.Unchecked;
+            }
+            else
+            {
+                isToroidal = true;
+                torodialToolStripMenuItem.CheckState = CheckState.Checked;
+            }
             
         }
 
         private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Random rand = new Random(1738);
+            ModalDialog dlg = new ModalDialog();
+            
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+               
+                graphicsPanel1.Invalidate();
+            }
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    //call next
+                    int num = rand.Next(0, 2);
 
+                    if (num == 0)
+                    {
+                        universe[x, y] = true;
+                    }
+                    else
+                    {
+                        universe[x, y] = false;
+                    }
+                }
+            }
+            graphicsPanel1.Invalidate();
+        }
+
+        private void finiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isToroidal == false)
+            {
+                isToroidal = false;
+                finiteToolStripMenuItem.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                isToroidal = true;
+                finiteToolStripMenuItem.CheckState = CheckState.Unchecked;
+            }
         }
     }
 }

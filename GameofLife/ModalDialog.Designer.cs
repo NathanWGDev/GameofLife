@@ -33,19 +33,19 @@ namespace GameofLife
             this.buttonCancel = new System.Windows.Forms.Button();
             this.numericUpDownNumber = new System.Windows.Forms.NumericUpDown();
             this.Label1Number = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownNumber2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownNumber3 = new System.Windows.Forms.NumericUpDown();
             this.labelWidth = new System.Windows.Forms.Label();
             this.labelHeight = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumber)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumber2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumber3)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOk
             // 
             this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOk.Location = new System.Drawing.Point(3, 289);
+            this.buttonOk.Location = new System.Drawing.Point(21, 182);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 0;
@@ -55,7 +55,7 @@ namespace GameofLife
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(84, 289);
+            this.buttonCancel.Location = new System.Drawing.Point(111, 182);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 1;
@@ -78,6 +78,11 @@ namespace GameofLife
             this.numericUpDownNumber.Name = "numericUpDownNumber";
             this.numericUpDownNumber.Size = new System.Drawing.Size(49, 20);
             this.numericUpDownNumber.TabIndex = 2;
+            this.numericUpDownNumber.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // Label1Number
             // 
@@ -88,19 +93,29 @@ namespace GameofLife
             this.Label1Number.TabIndex = 3;
             this.Label1Number.Text = "Milliseconds between new generations";
             // 
-            // numericUpDown1
+            // numericUpDownNumber2
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(213, 115);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(49, 20);
-            this.numericUpDown1.TabIndex = 4;
+            this.numericUpDownNumber2.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDownNumber2.Location = new System.Drawing.Point(213, 115);
+            this.numericUpDownNumber2.Name = "numericUpDownNumber2";
+            this.numericUpDownNumber2.Size = new System.Drawing.Size(49, 20);
+            this.numericUpDownNumber2.TabIndex = 4;
             // 
-            // numericUpDown2
+            // numericUpDownNumber3
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(213, 141);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(49, 20);
-            this.numericUpDown2.TabIndex = 5;
+            this.numericUpDownNumber3.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDownNumber3.Location = new System.Drawing.Point(213, 141);
+            this.numericUpDownNumber3.Name = "numericUpDownNumber3";
+            this.numericUpDownNumber3.Size = new System.Drawing.Size(49, 20);
+            this.numericUpDownNumber3.TabIndex = 5;
             // 
             // labelWidth
             // 
@@ -126,11 +141,11 @@ namespace GameofLife
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(391, 312);
+            this.ClientSize = new System.Drawing.Size(316, 221);
             this.Controls.Add(this.labelHeight);
             this.Controls.Add(this.labelWidth);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.numericUpDownNumber3);
+            this.Controls.Add(this.numericUpDownNumber2);
             this.Controls.Add(this.Label1Number);
             this.Controls.Add(this.numericUpDownNumber);
             this.Controls.Add(this.buttonCancel);
@@ -142,8 +157,8 @@ namespace GameofLife
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ModalDialog";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumber)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumber2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumber3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,8 +170,8 @@ namespace GameofLife
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.NumericUpDown numericUpDownNumber;
         private System.Windows.Forms.Label Label1Number;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericUpDownNumber2;
+        private System.Windows.Forms.NumericUpDown numericUpDownNumber3;
         private System.Windows.Forms.Label labelWidth;
         private System.Windows.Forms.Label labelHeight;
     }
