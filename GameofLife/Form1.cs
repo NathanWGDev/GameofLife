@@ -55,20 +55,13 @@ namespace GameofLife
                 // Iterate through the universe in the x, left to right
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    int count = 0;
+                   
 
-                    if (isToroidal == true)
-                    {
-                        count = CountNeighborsToroidal(x, y);
-                    }
-                    else
-                    {
-                        count = CountNeighborsFinite(x, y);
-                    }
-                        
-                    
+                    ChooseCount(y, x,out int count);
+
+
                     //apply the rules
-                    if (universe[x,y] == true)
+                    if (universe[x, y] == true)
                     {
                         if (count < 2)
                         {
@@ -95,7 +88,7 @@ namespace GameofLife
 
                         }
                     }
-                    CellLabel.Text = "Cells = " + universe[x,y].ToString();
+                    CellLabel.Text = "Cells = " + universe[x, y].ToString();
 
                 }
             }
@@ -118,6 +111,18 @@ namespace GameofLife
 
         }
 
+        private void ChooseCount(int y, int x, out int count)
+        {  
+            if (isToroidal == true)
+            {
+                count = CountNeighborsToroidal(x, y);
+            }
+            else
+            {
+                count = CountNeighborsFinite(x, y);
+            }
+        }
+
         // The event called by the timer every Interval milliseconds.
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -138,6 +143,12 @@ namespace GameofLife
             // A Brush for filling living cells interiors (color)
             Brush cellBrush = new SolidBrush(cellColor);
 
+            Font font = new Font("Arial", 10f);
+
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+                                
             // Iterate through the universe in the y, top to bottom
             for (int y = 0; y < universe.GetLength(1); y++)
             {
@@ -160,21 +171,16 @@ namespace GameofLife
                     // Outline the cell with a pen
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
 
-                    //Font font = new Font("Arial", 20f);
+                    ChooseCount(x, y, out int neighbors);                   
+                    if (neighbors > 0)
+                    {
+                        e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, cellRect, stringFormat);
+                    }
 
-                    //StringFormat stringFormat = new StringFormat();
-                    //stringFormat.Alignment = StringAlignment.Center;
-                    //stringFormat.LineAlignment = StringAlignment.Center;
-
-                    //cellRect = new Rectangle(0, 0, 100, 100);
-                    //int neighbors = 8;
-
-                    //e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, cellRect, stringFormat);
                 }
             }
-
                 if (isHUDvisibile)
-            {
+                {
                     //Draw hud
                     //Font font = new Font("Arial", 20f);
 
@@ -624,5 +630,7 @@ namespace GameofLife
             torodialToolStripMenuItem.CheckState = CheckState.Unchecked;
             isToroidal = false;
         }
+
+
     }
 }
