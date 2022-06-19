@@ -88,9 +88,10 @@ namespace GameofLife
 
                         }
                     }
-                    CellLabel.Text = "Cells = " + universe[x, y].ToString();
+                    
 
                 }
+               
             }
 
             //copy from what is in the scratch pad to universe
@@ -102,9 +103,9 @@ namespace GameofLife
 
             // Update status strip generations
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
-            
-            
 
+
+            CountCells();
 
             //invalidate
             graphicsPanel1.Invalidate();
@@ -166,11 +167,11 @@ namespace GameofLife
                     if (universe[x, y] == true)
                     {
                         e.Graphics.FillRectangle(cellBrush, cellRect);
-                    }
+                    }                    
 
                     // Outline the cell with a pen
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
-
+                     
                     ChooseCount(x, y, out int neighbors);                   
                     if (neighbors > 0)
                     {
@@ -179,17 +180,18 @@ namespace GameofLife
 
                 }
             }
-                if (isHUDvisibile)
-                {
-                    //Draw hud
-                    //Font font = new Font("Arial", 20f);
+                    if (isHUDvisibile)
+                    {
+                        //Draw hud
+                        Font font2 = new Font("Arial", 20f);
 
-                    //StringFormat stringFormat = new StringFormat();
-                    //stringFormat.Alignment = StringAlignment.Center;
-                    //stringFormat.LineAlignment = StringAlignment.Center;
-                    //Rectangle rect = new Rectangle(0, 0, 100, 100);
-                    //e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, graphicsPanel1.ClientRectangle, stringFormat);
-                }
+                        StringFormat stringFormat2 = new StringFormat();
+                        stringFormat2.Alignment = StringAlignment.Far;
+                        stringFormat2.LineAlignment = StringAlignment.Far;
+
+                        e.Graphics.DrawString(toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString(), font2, Brushes.Aquamarine, graphicsPanel1.ClientRectangle, stringFormat2);
+                    }
+
             // Cleaning up pens and brushes
             gridPen.Dispose();
             cellBrush.Dispose();
@@ -201,8 +203,8 @@ namespace GameofLife
             if (e.Button == MouseButtons.Left)
             {
                 // Calculate the width and height of each cell in pixels
-                float cellWidth = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
-                float cellHeight = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+                float cellWidth = graphicsPanel1.ClientSize.Width / (float)universe.GetLength(0);
+                float cellHeight = graphicsPanel1.ClientSize.Height / (float)universe.GetLength(1);
 
                 // Calculate the cell that was clicked in
                 // CELL X = MOUSE X / CELL WIDTH
@@ -215,6 +217,8 @@ namespace GameofLife
 
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
+
+                CountCells();
             }
         }
         private int CountNeighborsFinite(int x, int y)
@@ -334,6 +338,7 @@ namespace GameofLife
             timer.Enabled = false;
             generations = 0;
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
+            CountCells();
             graphicsPanel1.Invalidate();
         }
       
@@ -583,6 +588,7 @@ namespace GameofLife
                 }
             }
             graphicsPanel1.Invalidate();
+            CountCells();
             
         }
 
@@ -601,7 +607,6 @@ namespace GameofLife
             if (DialogResult.OK == dlg.ShowDialog())
             {
                 seed = dlg.SeedNumber;
-                graphicsPanel1.Invalidate();
             }
             Random rand = new Random(seed);
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -622,6 +627,7 @@ namespace GameofLife
                 }
             }
             graphicsPanel1.Invalidate();
+            CountCells();
         }
 
         private void finiteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -631,6 +637,26 @@ namespace GameofLife
             isToroidal = false;
         }
 
+        private void neighborCountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void CountCells()
+        {
+            int cells = 0;
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if (universe[x,y] == true)
+                    {
+                        cells++;
+                    }
+                }
+            }
+            CellLabel.Text = "Cells = " + cells.ToString();
+        }
     }
 }
