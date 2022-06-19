@@ -14,12 +14,12 @@ namespace GameofLife
     public partial class Form1 : Form
     {
         // The universe array
-        bool[,] universe = new bool[30, 30];
-        bool[,] scratchPad = new bool[30, 30];
+        bool[,] universe = new bool[input2, input3];
+        bool[,] scratchPad = new bool[input2, input3];
 
         // Drawing colors
-        Color gridColor = Color.Black;
-        Color cellColor = Color.SkyBlue;
+        Color gridColor = Properties.Settings.Default.GridColor;
+        Color cellColor = Properties.Settings.Default.CellColor;
 
         // The Timer class
         Timer timer = new Timer();
@@ -29,8 +29,8 @@ namespace GameofLife
 
         int seed = 0;
 
-        int input2 = Properties.Settings.Default.Width;
-        int input3 = Properties.Settings.Default.Height;
+        static int input2 = Properties.Settings.Default.Width;
+        static int input3 = Properties.Settings.Default.Height;
 
         bool isHUDvisibile = true;
 
@@ -44,9 +44,7 @@ namespace GameofLife
             timer.Tick += Timer_Tick;
             timer.Enabled = false; // start timer running
 
-            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
-            gridColor = Properties.Settings.Default.GridColor;
-            cellColor = Properties.Settings.Default.CellColor;
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;                      
         }
 
         // Calculate the next generation of cells
@@ -57,12 +55,16 @@ namespace GameofLife
                 // Iterate through the universe in the x, left to right
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    int count = CountNeighborsFinite(x, y);
+                    int count = 0;
 
                     if (isToroidal == true)
                     {
                         count = CountNeighborsToroidal(x, y);
-                    }                                       
+                    }
+                    else
+                    {
+                        count = CountNeighborsFinite(x, y);
+                    }
                         
                     
                     //apply the rules
@@ -126,9 +128,9 @@ namespace GameofLife
         {
             // Calculate the width and height of each cell in pixels
             // CELL WIDTH = WINDOW WIDTH / NUMBER OF CELLS IN X
-            int cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
+            float cellWidth = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
             // CELL HEIGHT = WINDOW HEIGHT / NUMBER OF CELLS IN Y
-            int cellHeight = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+            float cellHeight = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
 
             // A Pen for drawing the grid lines (color, width)
             Pen gridPen = new Pen(gridColor, 1);
@@ -143,7 +145,7 @@ namespace GameofLife
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     // A rectangle to represent each cell in pixels
-                    Rectangle cellRect = Rectangle.Empty;
+                    RectangleF cellRect = RectangleF.Empty;
                     cellRect.X = x * cellWidth;
                     cellRect.Y = y * cellHeight;
                     cellRect.Width = cellWidth;
@@ -193,14 +195,14 @@ namespace GameofLife
             if (e.Button == MouseButtons.Left)
             {
                 // Calculate the width and height of each cell in pixels
-                int cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
-                int cellHeight = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+                float cellWidth = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
+                float cellHeight = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
 
                 // Calculate the cell that was clicked in
                 // CELL X = MOUSE X / CELL WIDTH
-                int x = e.X / cellWidth;
+                int x = (int)(e.X / cellWidth);
                 // CELL Y = MOUSE Y / CELL HEIGHT
-                int y = e.Y / cellHeight;
+                int y = (int)(e.Y / cellHeight);
 
                 // Toggle the cell's state
                 universe[x, y] = !universe[x, y];
@@ -270,12 +272,12 @@ namespace GameofLife
                     // if xCheck is less than 0 then set to xLen - 1
                     if (xCheck < 0)
                     {
-                        xCheck = xLen = -1;
+                        xCheck = xLen - 1;
                     }
                     // if yCheck is less than 0 then set to yLen - 1
                     if (yCheck < 0)
                     {
-                       yCheck = yLen = -1;
+                       yCheck = yLen - 1;
                     }
                     // if xCheck is greater than or equal too xLen then set to 0
                     if (xCheck >= xLen)
@@ -328,9 +330,7 @@ namespace GameofLife
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
             graphicsPanel1.Invalidate();
         }
-
-       
-
+      
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -344,8 +344,6 @@ namespace GameofLife
 
         private void modalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
-
             ModalDialog dlg = new ModalDialog();
             dlg.Number = timer.Interval;
             dlg.Number2 = input2;
@@ -436,7 +434,7 @@ namespace GameofLife
                 // Prefix all comment strings with an exclamation point.
                 // Use WriteLine to write the strings to the file. 
                 // It appends a CRLF for you.
-                writer.WriteLine("!Here is the game.");
+                writer.WriteLine("!Here are the cells.");
 
                 
                 // Iterate through the universe one row at a time.
@@ -584,17 +582,9 @@ namespace GameofLife
 
         private void torodialToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isToroidal == false)
-            {
-                isToroidal = false;
-                torodialToolStripMenuItem.CheckState = CheckState.Unchecked;
-            }
-            else
-            {
-                isToroidal = true;
-                torodialToolStripMenuItem.CheckState = CheckState.Checked;
-            }
-            
+            torodialToolStripMenuItem.CheckState = CheckState.Checked;
+            finiteToolStripMenuItem.CheckState = CheckState.Unchecked;
+            isToroidal = true;
         }
 
         private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
@@ -630,16 +620,9 @@ namespace GameofLife
 
         private void finiteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isToroidal == false)
-            {
-                isToroidal = false;
-                finiteToolStripMenuItem.CheckState = CheckState.Checked;
-            }
-            else
-            {
-                isToroidal = true;
-                finiteToolStripMenuItem.CheckState = CheckState.Unchecked;
-            }
+            finiteToolStripMenuItem.CheckState = CheckState.Checked;
+            torodialToolStripMenuItem.CheckState = CheckState.Unchecked;
+            isToroidal = false;
         }
     }
 }
