@@ -31,13 +31,14 @@ namespace GameofLife
         {
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownSeedNumber = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSeedNumber)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOK
             // 
+            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOK.Location = new System.Drawing.Point(27, 115);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
@@ -55,12 +56,12 @@ namespace GameofLife
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown1
+            // numericUpDownSeedNumber
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(123, 44);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 2;
+            this.numericUpDownSeedNumber.Location = new System.Drawing.Point(123, 44);
+            this.numericUpDownSeedNumber.Name = "numericUpDownSeedNumber";
+            this.numericUpDownSeedNumber.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownSeedNumber.TabIndex = 2;
             // 
             // label1
             // 
@@ -79,7 +80,7 @@ namespace GameofLife
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(333, 150);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.numericUpDownSeedNumber);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -88,7 +89,7 @@ namespace GameofLife
             this.Name = "ModalDialog2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ModalDialog2";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSeedNumber)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,7 +99,7 @@ namespace GameofLife
 
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericUpDownSeedNumber;
         private System.Windows.Forms.Label label1;
     }
 }

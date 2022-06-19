@@ -27,6 +27,8 @@ namespace GameofLife
         // Generation count
         int generations = 0;
 
+        int seed = 0;
+
         int input2 = Properties.Settings.Default.Width;
         int input3 = Properties.Settings.Default.Height;
 
@@ -169,15 +171,17 @@ namespace GameofLife
                 }
             }
 
-            if (isHUDvisibile)
+                if (isHUDvisibile)
             {
-                //Draw hud
-                Font font = new Font("Arial", 20f);
+                    //Draw hud
+                    //Font font = new Font("Arial", 20f);
 
-                StringFormat stringFormat = new StringFormat();
-                stringFormat.Alignment = StringAlignment.Center;
-                stringFormat.LineAlignment = StringAlignment.Center;
-            }
+                    //StringFormat stringFormat = new StringFormat();
+                    //stringFormat.Alignment = StringAlignment.Center;
+                    //stringFormat.LineAlignment = StringAlignment.Center;
+                    //Rectangle rect = new Rectangle(0, 0, 100, 100);
+                    //e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, graphicsPanel1.ClientRectangle, stringFormat);
+                }
             // Cleaning up pens and brushes
             gridPen.Dispose();
             cellBrush.Dispose();
@@ -595,14 +599,15 @@ namespace GameofLife
 
         private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Random rand = new Random(1738);
-            ModalDialog dlg = new ModalDialog();
             
+            ModalDialog2 dlg = new ModalDialog2();
+            dlg.SeedNumber = seed;
             if (DialogResult.OK == dlg.ShowDialog())
             {
-               
+                seed = dlg.SeedNumber;
                 graphicsPanel1.Invalidate();
             }
+            Random rand = new Random(seed);
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
