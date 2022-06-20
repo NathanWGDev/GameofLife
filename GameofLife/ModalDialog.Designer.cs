@@ -141,7 +141,7 @@ namespace GameofLife
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(316, 221);
+            this.ClientSize = new System.Drawing.Size(306, 221);
             this.Controls.Add(this.labelHeight);
             this.Controls.Add(this.labelWidth);
             this.Controls.Add(this.numericUpDownNumber3);
