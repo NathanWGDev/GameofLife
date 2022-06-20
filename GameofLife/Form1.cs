@@ -34,12 +34,16 @@ namespace GameofLife
         static int input2 = Properties.Settings.Default.Width;
         static int input3 = Properties.Settings.Default.Height;
 
+        //bool for manipulating hud
         bool isHUDvisibile = true;
 
+        //bool for manipulating grid
         bool isGridOn = true;
 
+        //bool for manipululating neighbor count
         bool isNeighborCountOn = true;
 
+        //bool for switching finite and toroidal 
         bool isToroidal = false;
         public Form1()
         {
@@ -178,8 +182,11 @@ namespace GameofLife
                     }
 
                     // Outline the cell with a pen
-                    e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
-
+                    if (isGridOn)
+                    {
+                        e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
+                    }
+                    
                     if (isNeighborCountOn)
                     {
                         ChooseCount(x, y, out int neighbors);
@@ -211,7 +218,7 @@ namespace GameofLife
             gridPen.Dispose();
             cellBrush.Dispose();
 
-            //graphicsPanel1.Invalidate();
+            
         }
 
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
@@ -667,7 +674,7 @@ namespace GameofLife
             graphicsPanel1.Invalidate();
         }
 
-        public int CountCells()
+        private int CountCells()
         {
             int cells = 0;
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -685,6 +692,30 @@ namespace GameofLife
             return cells;
         }
 
+        private void hUDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (hUDToolStripMenuItem.CheckState == CheckState.Checked)
+            {
+                isHUDvisibile = true;
+            }
+            else if (hUDToolStripMenuItem.CheckState == CheckState.Unchecked)
+            {
+                isHUDvisibile = false;
+            }
+            graphicsPanel1.Invalidate();
+        }
 
+        private void gridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gridToolStripMenuItem.CheckState == CheckState.Checked)
+            {
+                isGridOn = true;
+            }
+            else if (gridToolStripMenuItem.CheckState == CheckState.Unchecked)
+            {
+                isGridOn = false;
+            }
+            graphicsPanel1.Invalidate();
+        }
     }
 }
